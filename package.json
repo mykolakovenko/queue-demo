@@ -19,8 +19,10 @@
   },
   "homepage": "https://github.com/mykolakovenko/queue-demo#readme",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.326.0",
     "express": "^4.18.2",
-    "faker": "^5.5.3"
+    "faker": "^5.5.3",
+    "jspdf": "^2.5.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.22"

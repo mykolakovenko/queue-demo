@@ -11,9 +11,9 @@ app.get('/healthcheck', (req, res) => {
   });
 });
 
-app.post('/user', (req, res) => {
+app.post('/user', async (req, res) => {
   const user = getUserData();
-  const pdf = generatePdf(user);
+  const pdf = await generatePdf(user);
 
   res.send({
     user,
