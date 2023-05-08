@@ -6,10 +6,10 @@
   "type": "module",
   "scripts": {
     "start-single": "node index-single.js",
-    "start-queue": "node index-queue.js",
+    "start-producer": "node index-producer.js",
     "start-worker": "node index-worker.js",
     "start-single:dev": "nodemon index-single.js",
-    "start-queue:dev": "nodemon index-queue.js",
+    "start-producer:dev": "nodemon index-producer.js",
     "start-worker:dev": "nodemon index-worker.js"
   },
   "repository": {
