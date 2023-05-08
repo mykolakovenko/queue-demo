@@ -5,12 +5,6 @@ import { generatePdf } from './src/pdf-service.js';
 const app = express();
 const port = 8080;
 
-app.get('/healthcheck', (req, res) => {
-  res.send({
-    status: 'operational',
-  });
-});
-
 app.post('/user', async (req, res) => {
   const user = getUserData();
   const pdf = await generatePdf(user);
