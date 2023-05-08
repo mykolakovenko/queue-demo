@@ -91,8 +91,8 @@ Resources:
           IpProtocol: tcp
         - CidrIp: 0.0.0.0/0
           Description: Http from anywhere
-          FromPort: 80
-          ToPort: 80
+          FromPort: 8080
+          ToPort: 8080
           IpProtocol: tcp
 
   WebEC2Instance:
