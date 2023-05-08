@@ -22,6 +22,7 @@ Resources:
             Action:
               - "sqs:SendMessage"
               - "sqs:ReceiveMessage"
+              - "sqs:DeleteMessage"
             Resource: !GetAtt PdfQueue.Arn
 
   EC2Role:
@@ -116,7 +117,7 @@ Resources:
     Type: AWS::SQS::Queue
     Properties:
       QueueName: demo-pdf
-      VisibilityTimeout: 300
+      VisibilityTimeout: 30
       ReceiveMessageWaitTimeSeconds: 20
 
   DNSRecord:
