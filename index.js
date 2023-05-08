@@ -3,7 +3,7 @@ import { getUserData } from './user-service.js';
 import { generatePdf } from './pdf-service.js';
 
 const app = express();
-const port = 3001;
+const port = 80;
 
 app.get('/healthcheck', (req, res) => {
   res.send({
