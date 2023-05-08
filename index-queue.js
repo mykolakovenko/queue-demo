@@ -1,27 +1,23 @@
 import express from 'express';
 import { getUserData } from './src/user-service.js';
-import { generatePdf } from './src/pdf-service.js';
+import { enqueuePdfGeneration } from './src/queue-service.js';
 
 const app = express();
 const port = 8080;
 
-app.get('/healthcheck', (req, res) => {
-  res.send({
-    status: 'operational',
-  });
-});
-
 app.post('/user', async (req, res) => {
   const user = getUserData();
-  const pdf = await generatePdf(user);
+  const { MessageId } = await enqueuePdfGeneration(user);
 
   res.send({
     user,
-    pdf,
+    message: {
+      id: MessageId,
+    }
   });
 });
 
 
 app.listen(port, () => {
-  console.log(`Single instance app listening on port ${port}`)
+  console.log(`Queue app listening on port ${port}`)
 });

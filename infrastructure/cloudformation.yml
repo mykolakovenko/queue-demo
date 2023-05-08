@@ -18,6 +18,11 @@ Resources:
             Action:
               - s3:PutObject
             Resource: !Sub "arn:aws:s3:::${S3Bucket}/*"
+          - Effect: "Allow"
+            Action:
+              - "sqs:SendMessage"
+              - "sqs:ReceiveMessage"
+            Resource: !GetAtt PdfQueue.Arn
 
   EC2Role:
     Type: AWS::IAM::Role
@@ -106,6 +111,13 @@ Resources:
       Tags:
         - Key: Name
           Value: queue-demo-single
+
+  PdfQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: demo-pdf
+      VisibilityTimeout: 300
+      ReceiveMessageWaitTimeSeconds: 20
 
   DNSRecord:
     Type: AWS::Route53::RecordSet
