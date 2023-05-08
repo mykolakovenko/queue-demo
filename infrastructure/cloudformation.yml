@@ -102,6 +102,27 @@ Resources:
           ToPort: 8080
           IpProtocol: tcp
 
+  WorkerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for queue demo worker
+      VpcId: !Ref VpcId
+      Tags:
+        - Key: Name
+          Value: queue-demo-worker
+      SecurityGroupEgress:
+        - CidrIp: 0.0.0.0/0
+          Description: Egress to everywhere
+          FromPort: 0
+          IpProtocol: "-1"
+          ToPort: 65535
+      SecurityGroupIngress:
+        - CidrIp: 0.0.0.0/0
+          Description: SSH from anywhere
+          FromPort: 22
+          ToPort: 22
+          IpProtocol: tcp
+
   PdfQueue:
     Type: AWS::SQS::Queue
     Properties:
@@ -139,6 +160,8 @@ Resources:
       IamInstanceProfile: !Ref EC2RoleInstanceProfile
       ImageId: ami-014571f1593b7be25 # Depends on the region. Replace hardcoded value
       InstanceType: t2.micro
+      SecurityGroupIds:
+        - !Ref WorkerSecurityGroup
       Tags:
         - Key: Name
           Value: queue-demo-consumer
