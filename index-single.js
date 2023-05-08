@@ -1,6 +1,6 @@
 import express from 'express';
-import { getUserData } from './user-service.js';
-import { generatePdf } from './pdf-service.js';
+import { getUserData } from './src/user-service.js';
+import { generatePdf } from './src/pdf-service.js';
 
 const app = express();
 const port = 8080;

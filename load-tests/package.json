@@ -1,0 +1,11 @@
+{
+  "name": "load-testing",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "single-instance:local": "k6 run single-instance.js",
+    "single-instance:cloud": "k6 cloud single-instance.js"
+  },
+  "author": "mykola.kovenko@gmail.com",
+  "license": "ISC"
+}
