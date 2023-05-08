@@ -4,15 +4,10 @@ Parameters:
     Description: The name of the S3 bucket to create
 
 Resources:
-  IAMUser:
-    Type: AWS::IAM::User
+  IAMPolicy:
+    Type: AWS::IAM::ManagedPolicy
     Properties:
-      UserName: queue-demo-user
-
-  IAMUserPolicy:
-    Type: AWS::IAM::Policy
-    Properties:
-      PolicyName: queue-demo-user-policy
+      ManagedPolicyName: queue-demo-iam-policy
       PolicyDocument:
         Version: "2012-10-17"
         Statement:
@@ -20,8 +15,34 @@ Resources:
             Action:
               - s3:PutObject
             Resource: !Sub "arn:aws:s3:::${S3Bucket}/*"
-      Users:
-        - !Ref IAMUser
+
+  EC2Role:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: queue-demo-ec2-role
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+      Path: "/"
+      ManagedPolicyArns:
+        - !Ref IAMPolicy
+
+  EC2RoleInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+        - !Ref EC2Role
+
+  IAMUser:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: queue-demo-user
+      ManagedPolicyArns:
+        - !Ref IAMPolicy
 
   S3Bucket:
     Type: AWS::S3::Bucket
