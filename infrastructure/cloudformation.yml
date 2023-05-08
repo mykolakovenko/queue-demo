@@ -3,6 +3,9 @@ Parameters:
     Type: String
     Description: The name of the S3 bucket to create
 
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+
 Resources:
   IAMPolicy:
     Type: AWS::IAM::ManagedPolicy
@@ -65,3 +68,51 @@ Resources:
             Action: s3:GetObject
             Resource: !Sub "arn:aws:s3:::${S3Bucket}/*"
             Principal: "*"
+
+  WebSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for queue demo
+      VpcId: !Ref VpcId
+      Tags:
+        - Key: Name
+          Value: queue-demo-web-server
+      SecurityGroupEgress:
+        - CidrIp: 0.0.0.0/0
+          Description: Egress to everywhere
+          FromPort: 0
+          IpProtocol: "-1"
+          ToPort: 65535
+      SecurityGroupIngress:
+        - CidrIp: 0.0.0.0/0
+          Description: SSH from anywhere
+          FromPort: 22
+          ToPort: 22
+          IpProtocol: tcp
+        - CidrIp: 0.0.0.0/0
+          Description: Http from anywhere
+          FromPort: 3001
+          ToPort: 3001
+          IpProtocol: tcp
+
+  WebEC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      IamInstanceProfile: !Ref EC2RoleInstanceProfile
+      ImageId: ami-014571f1593b7be25 # Depends on the region. Replace hardcoded value
+      InstanceType: t2.micro
+      SecurityGroupIds:
+        - !Ref WebSecurityGroup
+      Tags:
+        - Key: Name
+          Value: queue-demo-single
+
+  DNSRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneName: mkovenko.rocks.
+      Name: queue-demo-single-instance.mkovenko.rocks
+      Type: A
+      TTL: '60'
+      ResourceRecords:
+        - !GetAtt WebEC2Instance.PublicIp
