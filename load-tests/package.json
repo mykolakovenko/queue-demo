@@ -4,7 +4,9 @@
   "description": "",
   "scripts": {
     "single-instance:local": "k6 run single-instance.js",
-    "single-instance:cloud": "k6 cloud single-instance.js"
+    "single-instance:cloud": "k6 cloud single-instance.js",
+    "producer-instance:local": "k6 run producer-instance.js",
+    "producer-instance:cloud": "k6 cloud producer-instance.js"
   },
   "author": "mykola.kovenko@gmail.com",
   "license": "ISC"
